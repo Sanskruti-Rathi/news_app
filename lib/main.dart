@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:device_preview/device_preview.dart';
 import 'package:news_app/config/theme.dart';
+import 'package:news_app/pages/HomePage/Widgets/HomePageController.dart';
 import 'package:news_app/pages/HomePage/Widgets/Homepage.dart';
 import 'package:get/get.dart';
 void main() {
@@ -15,16 +16,16 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-
   @override
   Widget build(BuildContext context) {
+
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'NEWS APP',
       theme: lightTheme,
       themeMode: ThemeMode.system,
       darkTheme: darkTheme,
-      home: HomePage(),
+      home: HomePageController(),
       );
     }
  }
