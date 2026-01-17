@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:news_app/Components/NavigationBar.dart';
 import 'package:news_app/pages/HomePage/Widgets/NewsTile.dart';
 import 'package:news_app/pages/HomePage/Widgets/TrendingCard.dart';
 
@@ -16,46 +17,7 @@ class HomePage extends StatelessWidget {
         ),
       ),
 
-      bottomNavigationBar: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Container(
-              padding: EdgeInsets.symmetric(horizontal: 10,vertical: 10),
-              width: 200,
-              height: 50,
-              decoration: BoxDecoration(
-                color: Theme.of(context).colorScheme.primaryContainer,
-                borderRadius: BorderRadius.circular(20),
-              ),
-              child:Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Container(
-                    //padding: EdgeInsets.all(5),
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).colorScheme.primary,
-                      borderRadius: BorderRadius.circular(100),
-                    ),
-                    child: Center(
-                      child: Icon
-                      (Icons.home,
-                      size:30,
-                      color: Theme.of(context).colorScheme.secondaryContainer,
-                      ),
-                    ),
-                  ),
-                  Icon(Icons.book,size:30,color: Theme.of(context).colorScheme.secondaryContainer,),
-                  Icon(Icons.settings,size:30,color: Theme.of(context).colorScheme.secondaryContainer,),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
-
-
+      floatingActionButton: MyBottomNav(),
 
       body: Padding(
         padding: const EdgeInsets.all(10.0),

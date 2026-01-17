@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:device_preview/device_preview.dart';
 import 'package:news_app/config/theme.dart';
 import 'package:news_app/pages/HomePage/Widgets/Homepage.dart';
+import 'package:get/get.dart';
 void main() {
   runApp(
     DevicePreview(
@@ -17,7 +18,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'NEWS APP',
       theme: lightTheme,
