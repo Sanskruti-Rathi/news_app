@@ -1,28 +1,60 @@
 import 'package:flutter/material.dart';
 import 'package:news_app/Components/NavigationBar.dart';
+import 'package:news_app/Controller/NewsController.dart';
+import 'package:news_app/pages/HomePage/Widgets/NewsDetails/NewsDetails.dart';
 import 'package:news_app/pages/HomePage/Widgets/NewsTile.dart';
 import 'package:news_app/pages/HomePage/Widgets/TrendingCard.dart';
-
+import 'package:get/get.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    NewsController newsController = Get.put(NewsController());
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          "NEWSEE",
-          style: Theme.of(context).textTheme.headlineLarge,
-        ),
-      ),
-
-
       body: Padding(
         padding: const EdgeInsets.all(10.0),
         child: SingleChildScrollView(
           child: Column(
             children: [
+              SizedBox(height: 40),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Container(
+                    width: 50,
+                    height: 50,
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.primaryContainer,
+                      borderRadius: BorderRadius.circular(100),
+                    ),
+                    child:Icon(Icons.dashboard),
+                  ),
+                  Text("NEWS APP",style: TextStyle(fontSize: 25,
+                    fontFamily: "Poppins",
+                    fontWeight: FontWeight.w600,
+                    letterSpacing: 1.5,
+                  ),
+                  ),
+
+                  InkWell(
+                    onTap: (){
+                      newsController.getNewsForYou();
+                    },
+                    child: Container(
+                      width: 50,
+                      height: 50,
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).colorScheme.primaryContainer,
+                        borderRadius: BorderRadius.circular(100),
+                      ),
+                      child:Icon(Icons.person),
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 20),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -38,37 +70,29 @@ class HomePage extends StatelessWidget {
               ),
           
               const SizedBox(height: 20),
-          
               SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
-                child: Row(
-                  children:  [
-                    TrendingCard(
-                      imageUrl: "https://akm-img-a-in.tosshub.com/aajtak/images/story/202512/694d3ac18046d-indian-football-team-252307391-16x9.jpg?size=948:533" ,
-                      title: "भारतीय फुटबॉल के लिए मायूसी भरा 2025",
-                      author: "Nitish Kumar",
-                      tag: "Trending no 1",
-                      time: "2 day ago",
-                    ),
-                    TrendingCard(
-                      imageUrl: "https://akm-img-a-in.tosshub.com/aajtak/images/breaking_news/202601/696997e3b8bd0-maharashtra-municipal-corporation-election-results-164357872-16x9.jpg?size=900:504" ,
-                      title: "NDA's Track Record Struck A Chord",
-                      author: "Nitish Kumar",
-                      tag: "Trending no 2",
-                      time: "2 day ago",
-                    ),
-                    TrendingCard(
-                      imageUrl: "https://akm-img-a-in.tosshub.com/aajtak/images/story/202601/696a5e3b4cefb-deepika-padukone-ranveer-singh-dua-165013206-16x9.jpg?size=948:533" ,
-                      title: "1300 करोड़ पार हुई रणवीर सिंह की 'धुरंधर', बेटी दुआ के आने से बदली एक्टर की किस्मत!",
-                      author: "Nitish Kumar",
-                      tag: "Trending no 3",
-                      time: "2 day ago",
-                    ),
-          
-          
-                  ],
-                ),
-              ),
+                child: Obx(
+                      () => newsController.isTrendingLoading.value
+                          ? CircularProgressIndicator()
+                          : Row(
+                        children: newsController.trendingNewsList
+                            .map((e) => TrendingCard(
+                          ontap: () {
+                            Get.to(NewsDetailsPage(
+                              news: e,
+                            ));
+                          },
+                          imageUrl: e.urlToImage ?? "",
+                          title: e.title ?? "",
+                          author: e.author ?? "Unknown",
+                          tag: "Trending no 1",
+                          time: e.publishedAt ?? "",
+                        ))
+                            .toList(),
+                      ),
+
+              )),
               SizedBox(height: 20,),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -83,26 +107,137 @@ class HomePage extends StatelessWidget {
                   ),
                 ],
               ),
-              SizedBox(height: 20,),
-              Column(
+              SizedBox(height: 20),
+              Obx(
+                    () => newsController.isNewsForULoading.value
+                        ? CircularProgressIndicator()
+                        :Column(
+                          children: newsController.newsForYou5
+                          .map(
+                            (e) => NewsTile(
+                          ontap: (){
+                            Get.to(NewsDetailsPage(news: e));
+                          },
+                          imageUrl: e.urlToImage ??
+                              "https://akm-img-a-in.tosshub.com/aajtak/images/story/202601/697234675edae-bombay-high-court-222953518-16x9.jpeg?size=948:533",
+                          title: e.title ?? "No title",
+                          author: e.author ?? "Unknown",
+                          time: e.publishedAt ?? "",
+                        ),
+                      )
+                          .toList(),
+                    ),
+              ),
+              SizedBox(height: 20 ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  NewsTile(imageUrl: "https://akm-img-a-in.tosshub.com/aajtak/images/breaking_news/202601/696997e3b8bd0-maharashtra-municipal-corporation-election-results-164357872-16x9.jpg?size=900:504" ,
-                    title: "NDA's Track Record Struck A Chord",
-                    author: "Nitish Kumar",
-                    time: "2 day ago",),
-                  NewsTile(imageUrl: "https://akm-img-a-in.tosshub.com/aajtak/images/story/202512/694d3ac18046d-indian-football-team-252307391-16x9.jpg?size=948:533" ,
-                    title: "भारतीय फुटबॉल के लिए मायूसी भरा 2025",
-                    author: "Nitish Kumar",
-                    time: "2 day ago",),
-                  NewsTile(imageUrl: "https://akm-img-a-in.tosshub.com/aajtak/images/story/202601/696a5e3b4cefb-deepika-padukone-ranveer-singh-dua-165013206-16x9.jpg?size=948:533" ,
-                    title: "1300 करोड़ पार हुई रणवीर सिंह की 'धुरंधर', बेटी दुआ के आने से बदली एक्टर की किस्मत!",
-                    author: "Nitish Kumar",
-                    time: "2 day ago",)
+                  Text(
+                    "Tesla News",
+                    style: Theme.of(context).textTheme.bodyLarge,
+                  ),
+                  Text(
+                    "See All",
+                    style: Theme.of(context).textTheme.labelSmall,
+                  ),
                 ],
-              )
-          
+              ),
+              SizedBox(height: 20),
+              Obx(
+                    () => newsController.isTeslaLoading.value
+                    ? CircularProgressIndicator()
+                    :Column(
+                  children: newsController.tesla5News
+                      .map(
+                        (e) => NewsTile(
+                      ontap: (){
+                        Get.to(NewsDetailsPage(news: e));
+                      },
+                      imageUrl: e.urlToImage ??
+                          "https://akm-img-a-in.tosshub.com/aajtak/images/story/202601/697234675edae-bombay-high-court-222953518-16x9.jpeg?size=948:533",
+                      title: e.title ?? "No title",
+                      author: e.author ?? "Unknown",
+                      time: e.publishedAt ?? "",
+                    ),
+                  )
+                      .toList(),
+                ),
+              ),
+              SizedBox(height: 20 ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    "Apple News",
+                    style: Theme.of(context).textTheme.bodyLarge,
+                  ),
+                  Text(
+                    "See All",
+                    style: Theme.of(context).textTheme.labelSmall,
+                  ),
+                ],
+              ),
+
+              const SizedBox(height: 20),
+              SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Obx(
+                        () => newsController.isAppleLoading.value
+                        ? CircularProgressIndicator()
+                        : Row(
+                      children: newsController.apple5News
+                          .map((e) => TrendingCard(
+                        ontap: () {
+                          Get.to(NewsDetailsPage(
+                            news: e,
+                          ));
+                        },
+                        imageUrl: e.urlToImage ?? "",
+                        title: e.title ?? "",
+                        author: e.author ?? "Unknown",
+                        tag: "Trending no 1",
+                        time: e.publishedAt ?? "",
+                      ))
+                          .toList(),
+                    ),
+
+                  )),
+              SizedBox(height: 20 ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    "Business News",
+                    style: Theme.of(context).textTheme.bodyLarge,
+                  ),
+                  Text(
+                    "See All",
+                    style: Theme.of(context).textTheme.labelSmall,
+                  ),
+                ],
+              ),
+              SizedBox(height: 20),
+              Obx(
+                    () => newsController.isBusinessLoading.value
+                    ? CircularProgressIndicator()
+                    :Column(
+                  children: newsController.business5News
+                      .map(
+                        (e) => NewsTile(
+                      ontap: (){
+                        Get.to(NewsDetailsPage(news: e));
+                      },
+                      imageUrl: e.urlToImage ??
+                          "https://akm-img-a-in.tosshub.com/aajtak/images/story/202601/697234675edae-bombay-high-court-222953518-16x9.jpeg?size=948:533",
+                      title: e.title ?? "No title",
+                      author: e.author ?? "Unknown",
+                      time: e.publishedAt ?? "",
+                    ),
+                  )
+                      .toList(),
+                ),
+              ),
             ],
-          
           ),
         ),
       ),
