@@ -19,21 +19,23 @@ class ArticalPage extends StatelessWidget {
             children: [
              Searchwidget(),
               SizedBox(height: 20),
-              Column(
-                children: newsController.newsForYouList.map((e)=>NewsTile(
-                  ontap: (){
-                    Get.to(NewsDetailsPage(news: e));
-                  },
-                  imageUrl:
-                    e.urlToImage ??
-                "https://akm-img-a-in.tosshub.com/aajtak/images/breaking_news/202601/696997e3b8bd0-maharashtra-municipal-corporation-election-results-164357872-16x9.jpg?size=900:504" ,
-                  title: e.title!  ,
-                  author: e.author ?? "Unknown",
-                  time: e.publishedAt!,
-                ),).toList(),
+              Obx(
+                      () => Column(
+                        children: newsController.newsForYouList.map((e)=>NewsTile(
+                          ontap: (){
+                            Get.to(NewsDetailsPage(news: e));
+                          },
+                          imageUrl:
+                          e.urlToImage ??
+                              "https://akm-img-a-in.tosshub.com/aajtak/images/breaking_news/202601/696997e3b8bd0-maharashtra-municipal-corporation-election-results-164357872-16x9.jpg?size=900:504" ,
+                          title: e.title!  ,
+                          author: e.author ?? "Unknown",
+                          time: e.publishedAt!,
+                        ),).toList(),
 
 
 
+                      ),
               ),
 
             ],
