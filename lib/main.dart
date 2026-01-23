@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:device_preview/device_preview.dart';
+import 'package:news_app/Demopage.dart';
 import 'package:news_app/config/theme.dart';
 import 'package:news_app/pages/HomePage/Widgets/HomePageController.dart';
 import 'package:news_app/pages/HomePage/Widgets/Homepage.dart';
@@ -26,6 +27,7 @@ class MyApp extends StatelessWidget {
       themeMode: ThemeMode.system,
       darkTheme: darkTheme,
       home: HomePageController(),
+      //home: DemoPage(),
       );
     }
  }

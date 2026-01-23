@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:news_app/Components/NavigationBar.dart';
+import 'package:news_app/Components/NewsTileLoading.dart';
+import 'package:news_app/Components/TrendingLoadingCard.dart';
 import 'package:news_app/Controller/NewsController.dart';
 import 'package:news_app/pages/HomePage/Widgets/NewsDetails/NewsDetails.dart';
 import 'package:news_app/pages/HomePage/Widgets/NewsTile.dart';
@@ -74,8 +76,12 @@ class HomePage extends StatelessWidget {
                 scrollDirection: Axis.horizontal,
                 child: Obx(
                       () => newsController.isTrendingLoading.value
-                          ? CircularProgressIndicator()
-                          : Row(
+                          ? Row(children: [
+                            TrendingLoadingCard(),
+                            TrendingLoadingCard(),
+
+                            ],)
+                         : Row(
                         children: newsController.trendingNewsList
                             .map((e) => TrendingCard(
                           ontap: () {
@@ -110,7 +116,13 @@ class HomePage extends StatelessWidget {
               SizedBox(height: 20),
               Obx(
                     () => newsController.isNewsForULoading.value
-                        ? CircularProgressIndicator()
+                        ? Column(
+                      children: [
+                        NewsTileLoading(),
+                        NewsTileLoading(),
+                        NewsTileLoading(),
+                      ],
+                    )
                         :Column(
                           children: newsController.newsForYou5
                           .map(
@@ -145,7 +157,13 @@ class HomePage extends StatelessWidget {
               SizedBox(height: 20),
               Obx(
                     () => newsController.isTeslaLoading.value
-                    ? CircularProgressIndicator()
+                    ? Column(
+                      children: [
+                        NewsTileLoading(),
+                        NewsTileLoading(),
+                        NewsTileLoading(),
+                      ],
+                    )
                     :Column(
                   children: newsController.tesla5News
                       .map(
@@ -183,7 +201,11 @@ class HomePage extends StatelessWidget {
                   scrollDirection: Axis.horizontal,
                   child: Obx(
                         () => newsController.isAppleLoading.value
-                        ? CircularProgressIndicator()
+                        ? Row(children: [
+                          TrendingLoadingCard(),
+                          TrendingLoadingCard(),
+
+                        ],)
                         : Row(
                       children: newsController.apple5News
                           .map((e) => TrendingCard(
@@ -219,7 +241,13 @@ class HomePage extends StatelessWidget {
               SizedBox(height: 20),
               Obx(
                     () => newsController.isBusinessLoading.value
-                    ? CircularProgressIndicator()
+                    ? Column(
+                      children: [
+                        NewsTileLoading(),
+                        NewsTileLoading(),
+                        NewsTileLoading(),
+                      ],
+                    )
                     :Column(
                   children: newsController.business5News
                       .map(
