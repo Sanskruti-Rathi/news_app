@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:news_app/Model/NewsModel.dart';
+import 'package:lottie/lottie.dart';
+import 'package:news_app/Controller/NewsController.dart';
 
 class NewsDetailsPage extends StatelessWidget {
   final NewsModel news;
@@ -8,6 +10,7 @@ class NewsDetailsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    NewsController newsController = Get.put(NewsController());
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(10.0),
@@ -87,7 +90,50 @@ class NewsDetailsPage extends StatelessWidget {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 10),
+                  const SizedBox(height: 20),
+                  Container(
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.primaryContainer,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    // height: 30,
+                    child: Row(
+                      children: [
+                        Obx(
+                              () => newsController.isSpeeking.value
+                              ? IconButton(
+                            onPressed: () {
+                              newsController.stop();
+                            },
+                            icon: Icon(
+                              Icons.stop,
+                              size: 50,
+                            ),
+                          )
+                              : IconButton(
+                            onPressed: () {
+                              newsController.speak(
+                                  news.description ?? "No Description");
+                            },
+                            icon: Icon(
+                              Icons.play_arrow_rounded,
+                              size: 50,
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                            child: Obx(
+                                  () => Lottie.asset(
+                                'assets/animation/wave.json',
+                                height: 70,
+                                animate: newsController.isSpeeking.value,
+                              ),
+                            ))
+
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 20),
                   Row(
                     children: [
                       Flexible(
